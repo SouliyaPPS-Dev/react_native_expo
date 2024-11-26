@@ -1,0 +1,6 @@
+import React from 'react';
+import { ThemedText } from '@/components/ThemedText';
+
+export default function Calendar() {
+  return <ThemedText>ພິກຂຸ ທ. ! ເພາະອາໄສຕາດ້ວຍ ຮູບທັງຫຼາຍດ້ວຍ</ThemedText>;
+}
