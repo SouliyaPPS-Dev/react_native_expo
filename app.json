@@ -1,26 +1,23 @@
 {
   "expo": {
-    "name": "buddhaword",
-    "slug": "buddhaword",
+    "name": "Buddhaword",
+    "slug": "Buddhaword",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logotype.png",
     "scheme": "buddhaword",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "updates": {
-      "enabled": true,
-      "checkAutomatically": "ON_LOAD",
-      "fallbackToCacheTimeout": 1000
-    },
     "ios": {
+      "newArchEnabled": true,
       "supportsTablet": true,
       "bundleIdentifier": "com.souliyappsdev.buddhaword"
     },
     "android": {
+      "newArchEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logotype.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFAF5D"
       },
       "package": "com.souliyappsdev.buddhaword"
     },
@@ -33,22 +30,38 @@
         }
       },
       "bundler": "metro",
-      "output": "single",
-      "favicon": "./assets/images/logotype.png"
+      "svg": true,
+      "output": "static",
+      "favicon": "./assets/images/logotype.png",
+      "manifest": {
+        "short_name": "Buddhaword",
+        "name": "Buddhaword",
+        "start_url": "/?source=pwa",
+        "display": "standalone",
+        "background_color": "#FFAF5D",
+        "theme_color": "#FFAF5D",
+        "icons": [
+          {
+            "src": "./dist/icons/Icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+          },
+          {
+            "src": "./dist/icons/Icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+          }
+        ]
+      }
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "origin": "https://acme.com",
-          "asyncRoutes": {
-            "web": true,
-            "default": "development"
-          },
           "image": "./assets/images/logotype.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
+          "resizeMode": "cover",
           "backgroundColor": "#ffffff"
         }
       ]

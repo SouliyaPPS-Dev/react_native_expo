@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "dev": "expo start",
+    "start": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -12,7 +12,8 @@
     "predeploy": "expo export -p web",
     "deploy-hosting": "npm run predeploy && firebase deploy --only hosting",
     "preview": "eas build --platform android --profile preview",
-    "production": "eas build --platform android --profile production"
+    "production": "eas build --platform android --profile production",
+    "doctor": "npx expo-doctor"
   },
   "expo": {
     "doctor": {
@@ -25,12 +26,17 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
     "@expo/config-plugins": "~9.0.0",
     "@expo/metro-runtime": "~4.0.0",
     "@expo/prebuild-config": "~8.0.0",
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native/debugger-frontend": "^0.76.3",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
+    "@supabase/supabase-js": "^2.46.2",
+    "@types/react-native-vector-icons": "^6.4.18",
     "dotenv": "^16.4.5",
     "eas-cli": "^13.4.1",
     "eslint": "^9.15.0",
@@ -50,13 +56,18 @@
     "expo-web-browser": "~14.0.1",
     "firebase-tools": "^13.27.0",
     "metro-config": "^0.81.0",
-    "react": "18",
-    "react-dom": "18",
+    "native-base": "3.4.25",
+    "normalize-css-color": "^1.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-native": "^0.76.3",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.1.0",
+    "react-native-svg": "15.8.0",
+    "react-native-svg-transformer": "^1.5.0",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.2"
   },
