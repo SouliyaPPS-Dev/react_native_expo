@@ -5,71 +5,67 @@ import { useQuery } from '@tanstack/react-query';
 import { Platform } from 'react-native';
 import { useEffect, useState } from 'react';
 
-// Helper Function: Read `category` from query params (Web Only)
-const getCategoryFromQueryParams = () => {
-     if (Platform.OS === 'web') {
-          if (typeof window !== 'undefined') {
-               const params = new URLSearchParams(window.location.search);
-               return params.get('category') ?? null;
-          }
+// Helper: Get Category from Query Params (Web Only)
+const getCategoryFromQueryParams = (): string | null => {
+     if (Platform.OS === 'web' && typeof window !== 'undefined') {
+          return new URLSearchParams(window.location.search).get('category');
      }
      return null;
 };
 
-// Function to Get Initial Category (Platform Agnostic)
-const getInitialCategory = async () => {
+// Helper: Get Initial Category (Platform Agnostic)
+const getInitialCategory = async (): Promise<string> => {
      if (Platform.OS === 'web') {
-          const savedCategory = localStorageData.getCategory();
-          return savedCategory ?? 'ທັມ'; // Web fallback default
-     } else {
-          const savedCategory = await AsyncStorage.getItem('category');
-          return savedCategory ?? 'ທັມ'; // Mobile fallback default
+          return getCategoryFromQueryParams() ?? localStorageData.getCategory() ?? 'ທັມ';
      }
+     const savedCategory = await AsyncStorage.getItem('category');
+     return savedCategory ?? 'ທັມ';
 };
 
-// Custom Hook for Managing Categories
+// Hook: Manage and Sync Categories
 export const useCategory = () => {
      const [resolvedCategory, setResolvedCategory] = useState<string>('ທັມ'); // Default Category
+
+     // Fetch the current category, with fallback logic
      const { data: category } = useQuery<string>({
           queryKey: ['category'],
-          queryFn: async () => {
-               // Check if category is already cached
-               const cachedCategory = queryClient.getQueryData<string>(['category']);
-               return cachedCategory ?? (await getInitialCategory()); // Fallback if not cached
-          },
+          queryFn: async () => queryClient.getQueryData<string>(['category']) ?? (await getInitialCategory()),
      });
 
-     // Sync on Web: Listen for Browser Navigation (e.g., Back/Forward)
+
+     // Sync with Query Params on Web
      useEffect(() => {
           if (Platform.OS === 'web') {
-               const handlePopState = () => {
+               const syncCategoryWithParams = () => {
                     const urlCategory = getCategoryFromQueryParams();
                     if (urlCategory) {
                          queryClient.setQueryData(['category'], urlCategory);
-                         localStorageData.setCategory(urlCategory); // Persist to `localStorage`
+                         localStorageData.setCategory(urlCategory);
                          setResolvedCategory(urlCategory);
                     }
                };
-               window.addEventListener('popstate', handlePopState);
-               return () => {
-                    window.removeEventListener('popstate', handlePopState);
-               };
+
+               // Initialize on mount
+               syncCategoryWithParams();
+
+               // Listen for Browser Navigation
+               window.addEventListener('popstate', syncCategoryWithParams);
+               return () => window.removeEventListener('popstate', syncCategoryWithParams);
           }
      }, []);
 
-     // Sync on Mobile: Save to AsyncStorage When Category Changes
+     // Sync to Local Storage (Web or Mobile)
      useEffect(() => {
           if (category) {
-               if (Platform.OS !== 'web') {
+               setResolvedCategory(category);
+               if (Platform.OS === 'web') {
+                    localStorageData.setCategory(category);
+               } else {
                     AsyncStorage.setItem('category', category).catch(console.error);
+                    setResolvedCategory(category);
                }
-               setResolvedCategory(category); // Update local state
           }
      }, [category]);
 
-     // Return Resolved Category and a Helper Getter
-     return {
-          category: resolvedCategory,
-          getInitialCategory,
-     };
+     return { category: resolvedCategory, getInitialCategory };
 };
