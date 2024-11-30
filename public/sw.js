@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ui-cache-v1';
+const CACHE_NAME = 'ui-cache-v4'; // Update the cache version when assets change
 const ASSETS_TO_CACHE = [
   '/', // Root
   '/index.html',
@@ -11,45 +11,52 @@ const ASSETS_TO_CACHE = [
   // Add more assets like images, fonts, etc.
 ];
 
-// Install: Cache all necessary assets
+// INSTALL: Cache all necessary assets
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing and caching app shell...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      console.log('[Service Worker] Caching assets...');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
-  self.skipWaiting();
+  self.skipWaiting(); // Force the service worker to activate immediately after install
 });
 
-// Fetch: Serve cached assets (offline mode)
+// FETCH: Serve cached assets for offline mode, fallback to network if unavailable
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      return response || fetch(event.request).catch(() => {
-        if (event.request.destination === 'document') {
-          // Fallback to cached `index.html` for navigation
-          return caches.match('/index.html');
-        }
-      });
+      // Serve from cache OR fallback to fetch if not found in cache
+      return (
+        response ||
+        fetch(event.request).catch(() => {
+          // Optionally serve fallback cached pages for `document` requests
+          if (event.request.destination === 'document') {
+            return caches.match('/index.html');
+          }
+        })
+      );
     })
   );
 });
 
-// Activate: Remove old caches
+// ACTIVATE: Remove old caches not matching the current CACHE_NAME
 self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating...');
+  console.log('[Service Worker] Activating and cleaning up old caches...');
   event.waitUntil(
+    // Get all cache names
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
+          // If cache name is not the current one, delete it
           if (cacheName !== CACHE_NAME) {
-            console.log('[Service Worker] Deleting old cache:', cacheName);
+            console.log('[Service Worker] Removing old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  self.clients.claim();
+  self.clients.claim(); // Become available for all clients immediately
 });

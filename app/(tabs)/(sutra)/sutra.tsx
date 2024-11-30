@@ -1,62 +1,88 @@
+import { DataHandler } from '@/components/DataHandler';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { StyleSheet } from 'react-native';
+import { useSutra } from '@/hooks/sutra/useSutra';
+import React from 'react';
+import {
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function SutraScreen() {
+  const { data, isLoading, error, categories, handleCategoryPress } =
+    useSutra();
+
+  // Render each category card
+  const renderCategory = ({ item }: { item: string }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => handleCategoryPress(item)}
+    >
+      <ImageBackground
+        source={require('@/assets/images/Icon-512.png')}
+        style={styles.imageBackground}
+        imageStyle={styles.imageStyle}
+      >
+        <View style={styles.overlay}>
+          <Text style={styles.categoryText}>{item}</Text>
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+
   return (
     <ParallaxScrollView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type='default'>
-          ເພາະເຫດໃດຈຶ່ງຊື່ວ່າ ອຸປາສົກ? ສະໄໝໜຶ່ງ
-          ພຣະຜູ້ມີພຣະພາກປະທັບຢູ່ໃນນິໂຄທາຣາມ ໃກ້ພຣະນະຄອນກະບິນລະພັດ ແຄວ້ນສັກກະ
-          ຄັ້ງນັ້ນ
-          ພຣະເຈົ້າມະຫານາມະສັກກາຍະຣາດສະເດັດເຂົ້າໄປເຝົ້າພຣະຜູ້ມີພຣະພາກເຖິງທີ່ປະທັບ
-          ຊົງອະພິວາດແລ້ວ ປະທັບນັ່ງໃນທີ່ຄວນສ່ວນຂ້າງໜຶ່ງ ດ້ວຍເຫດພຽງເທົ່າໃດ
-          ບຸກຄົນຈິ່ງຊື່ວ່າ ອຸປາສົກ? ມະຫານາມະ!
-          ບຸກຄົນຜູ້ເຖິງພຣະພຸດທະເຈົ້າເປັນສະຣະນະ ເຖິງພຣະທັມເປັນສະຣະນະ
-          ເຖິງພຣະສົງເປັນສະຣະນະ. ມະຫານາມະ ດ້ວຍເຫດພຽງເທົ່ານີ້ແລ ບຸກຄົນຈິ່ງຊື່ວ່າ
-          ອຸປາສົກ. ຂ້າແຕ່ພຣະອົງຜູ້ຈະເຣີນ! ດ້ວຍເຫດພຽງເທົ່າໃດ ອຸປາສົກຈິ່ງຊື່ວ່າ
-          ເປັນຜູ້ເຖິງພ້ອມດ້ວຍສີນ? ມະຫານາມະ! ອຸປາສົກເປັນຜູ້ງົດເວັ້ນຈາກປານາຕິບາດ,
-          ເປັນຜູ້ງົດເວັ້ນຈາກອະທິນນາທານ, ເປັນຜູ້ງົດເວັ້ນຈາກກາເມສຸມິດສາຈານ,
-          ເປັນຜູ້ງົດເວັ້ນຈາກມຸສາວາດ,
-          ເປັນຜູ້ງົດເວັ້ນຈາກສຸຣາເມຣະຍະມັດຊະປະມາທັດຖານະ. ມະຫານາມະ
-          ດ້ວຍເຫດພຽງເທົ່ານີ້ແລ ອຸປາສົກຈິ່ງຊື່ວ່າ ເປັນຜູ້ເຖິງພ້ອມດ້ວຍສີນ.
-          ຂ້າແຕ່ພຣະອົງຜູ້ຈະເຣີນ! ດ້ວຍເຫດພຽງເທົ່າໃດ ອຸປາສົກຈິ່ງຊື່ວ່າ
-          ເປັນຜູ້ເຖິງພ້ອມດ້ວຍສັດທາ? ມະຫານາມະ! ອຸປາສົກໃນທັມວິໄນນີ້ ເປັນຜູ້ມີສັດທາ
-          ເຊື່ອພຣະປັນຍາເຄື່ອງຕຣັດສະຮູ້ຂອງຕະຖາຄົດວ່າ ເພາະເຫດຢ່າງນີ້ໆ
-          ພຣະຜູ້ມີພຣະພາກເຈົ້ານັ້ນ ເປັນພຣະອະຣະຫັນຕະ, ຕຣັດຮູ້ເອງໂດຍຊອບ,
-          ເຖິງພ້ອມດ້ວຍວິຊາ ແລະ ຈະຣະນະ, ສະເດັດໄປດີແລ້ວ, ຊົງຮູ້ແຈ້ງໂລກ,
-          ເປັນສາຣະຖີຝຶກບຸຣຸດທີ່ຄວນຝຶກບໍ່ມີໃຜຍິ່ງກວ່າ, ເປັນສາສະດາຂອງເທວະດາ ແລະ
-          ມະນຸດທັງຫລາຍ, ເປັນຜູ້ເບີກບານ, ເປັນຜູ້ຈຳແນກທັມ ດັ່ງນີ້. ມະຫານາມະ
-          ດ້ວຍເຫດພຽງເທົ່ານີ້ແລ ອຸປາສົກຈິ່ງຊື່ວ່າ ເປັນຜູ້ເຖິງພ້ອມດ້ວຍສັດທາ.
-          ຂ້າແຕ່ພຣະອົງຜູ້ຈະເຣີນ! ດ້ວຍເຫດພຽງເທົ່າໃດ ອຸປາສົກຈິ່ງຊື່ວ່າ
-          ເປັນຜູ້ເຖິງພ້ອມດ້ວຍຈາຄະ? ມະຫານາມະ! ອຸປາສົກໃນທຳມະວິໄນນີ້
-          ມີໃຈປາສະຈາກມັດສະຣິຍະອັນເປັນມົນທິນ ມີຈາຄະອັນສະລະແລ້ວ ມີຝາມືອັນຊຸ່ມ
-          ຍິນດີໃນການສະລະ ເປັນຜູ້ຄວນແກ່ການຂໍ ຍິນດີໃນການແຈກຈ່າຍທານ ຢູ່ຄອງເຮືອນ.
-          ມະຫານາມະ ດ້ວຍເຫດພຽງເທົ່ານີ້ແລ ອຸປາສົກຈິ່ງຊື່ວ່າ
-          ເປັນຜູ້ເຖິງພ້ອມດ້ວຍຈາຄະ. ຂ້າແຕ່ພຣະອົງຜູ້ຈະເຣີນ! ດ້ວຍເຫດພຽງເທົ່າໃດ
-          ອຸປາສົກຈິ່ງຊື່ວ່າ ເປັນຜູ້ເຖິງພ້ອມດ້ວຍປັນຍາ? ມະຫານາມະ!
-          ອຸປາສົກໃນທຳມະວິໄນນີ້ ເປັນຜູ້ມີປັນຍາ
-          ປະກອບດ້ວຍປັນຍາເຄື່ອງກຳນົດຮູ້ຄວາມເກີດ ແລະຄວາມດັບອັນເປັນອະຣິຍະ
-          ເປັນເຄື່ອງຊຳແຣກກິເລດໃຫ້ເຖິງຄວາມສິ້ນທຸກໂດຍຊອບ. ມະຫານາມະ
-          ດ້ວຍເຫດພຽງເທົ່ານີ້ແລ ອຸປາສົກຈິ່ງຊື່ວ່າ ເປັນຜູ້ເຖິງພ້ອມດ້ວຍປັນຍາ.
-          ---------------------------------------------------- ສັງຍຸຕຕະນິກາຍ
-          ມະຫາວາຣະວັຄ 19/392/1590
-        </ThemedText>
-      </ThemedView>
+      <DataHandler isLoading={isLoading} error={error} data={data || []}>
+        {/* Display categories in a FlatList with grid layout */}
+        <FlatList
+          data={categories}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={renderCategory}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          contentContainerStyle={styles.listContainer}
+        />
+      </DataHandler>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  listContainer: {
+    padding: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  row: {
+    justifyContent: 'space-between',
+  },
+  card: {
+    flex: 1,
+    margin: 8,
+    borderRadius: 8,
+    overflow: 'hidden',
+    height: 150,
+    backgroundColor: '#f5f5f5',
+  },
+  imageBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageStyle: {
+    borderRadius: 8,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  categoryText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
   },
 });

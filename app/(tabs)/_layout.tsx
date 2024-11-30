@@ -1,11 +1,46 @@
-import React from 'react';
-import { Image } from 'react-native';
 import ColorModeToggle from '@/components/ColorModeToggle';
+import { useCategory } from '@/hooks/sutra/useCategory';
 import { Tabs } from 'expo-router';
 import { useColorMode } from 'native-base';
+import React from 'react';
+import { Image } from 'react-native';
+
+// Mapping object for icons
+const ICONS = {
+  home: require('@/assets/images/home.png'),
+  sutra: require('@/assets/images/sutra.png'),
+  book: require('@/assets/images/book.png'),
+  calendar: require('@/assets/images/calendar.png'),
+};
 
 export default function TabLayout() {
   const { colorMode } = useColorMode();
+
+  const { category } = useCategory();
+
+  // Helper Function: Render Tabs
+  const renderTab = (
+    name: string,
+    title: string,
+    iconKey: keyof typeof ICONS
+  ) => (
+    <Tabs.Screen
+      name={name}
+      options={{
+        title,
+        tabBarIcon: ({ focused }) => (
+          <Image
+            source={ICONS[iconKey]} // Use statically mapped icons
+            style={{
+              width: 24,
+              height: 24,
+              opacity: focused ? 1 : 0.5,
+            }}
+          />
+        ),
+      }}
+    />
+  );
 
   return (
     <Tabs
@@ -15,21 +50,21 @@ export default function TabLayout() {
           backgroundColor: colorMode === 'dark' ? '#1f1f1f' : '#ffffff',
           borderTopWidth: 1,
           borderTopColor: colorMode === 'dark' ? '#333' : '#ccc',
-          height: 60, // Adjust height for icons and text stacking
+          height: 60, // Space for icons and text
         },
         tabBarLabelStyle: {
           fontFamily: 'PhetsarathOT',
-          fontSize: 14, // Larger font size for readability
-          lineHeight: 18, // Ensure adequate spacing for taller text
+          fontSize: 14,
+          lineHeight: 18,
         },
         tabBarItemStyle: {
-          flexDirection: 'column', // Stack image and text vertically
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           width: 'auto',
         },
         headerStyle: {
-          backgroundColor: colorMode === 'light' ? '#ffffff' : '#1f1f1f',
+          backgroundColor: colorMode === 'dark' ? '#1f1f1f' : '#ffffff',
         },
         headerTitleStyle: {
           fontFamily: 'PhetsarathOT',
@@ -37,91 +72,27 @@ export default function TabLayout() {
         },
         headerTintColor: colorMode === 'dark' ? '#ffffff' : '#1f1f1f',
         headerRight: () => <ColorModeToggle />,
-        lazy: true,
+        lazy: true, // Lazily load tabs for performance
       }}
     >
       {/* Home Tab */}
-      <Tabs.Screen
-        name='index'
-        options={{
-          title: 'ໜ້າຫຼັກ',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('@/assets/images/home.png') // Active state image
-                  : require('@/assets/images/home.png') // Inactive state image
-              }
-              style={{
-                width: 24,
-                height: 24,
-                opacity: focused ? 1 : 0.5,
-              }}
-            />
-          ),
-        }}
-      />
+      {renderTab('index', 'ໜ້າຫຼັກ', 'home')}
+
       {/* Sutra Tab */}
-      <Tabs.Screen
-        name='(sutra)/sutra'
-        options={{
-          title: 'ພຣະສູດ',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('@/assets/images/sutra.png') // Active state
-                  : require('@/assets/images/sutra.png') // Inactive state
-              }
-              style={{
-                width: 24,
-                height: 24,
-                opacity: focused ? 1 : 0.5,
-              }}
-            />
-          ),
-        }}
-      />
+      {renderTab('(sutra)/sutra', 'ພຣະສູດ', 'sutra')}
+
       {/* Book Tab */}
-      <Tabs.Screen
-        name='(book)/book'
-        options={{
-          title: 'ປື້ມ',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('@/assets/images/book.png') // Active state
-                  : require('@/assets/images/book.png') // Inactive state
-              }
-              style={{
-                width: 24,
-                height: 24,
-                opacity: focused ? 1 : 0.5,
-              }}
-            />
-          ),
-        }}
-      />
+      {renderTab('(book)/book', 'ປື້ມ', 'book')}
+
       {/* Calendar Tab */}
+      {renderTab('(calendar)/calendar', 'ປະຕິທິນທັມ', 'calendar')}
+
+      {/* ItemsScreen Tab */}
       <Tabs.Screen
-        name='(calendar)/calendar'
+        name='(sutra)/ItemsScreen'
         options={{
-          title: 'ປະຕິທິນທັມ',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('@/assets/images/calendar.png') // Active state
-                  : require('@/assets/images/calendar.png') // Inactive state
-              }
-              style={{
-                width: 24,
-                height: 24,
-                opacity: focused ? 1 : 0.5,
-              }}
-            />
-          ),
+          title: category, // Dynamically set the title
+          href: null, // Disable native tab navigation
         }}
       />
     </Tabs>

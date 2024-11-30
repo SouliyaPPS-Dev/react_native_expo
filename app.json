@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Buddhaword",
-    "slug": "Buddhaword",
+    "slug": "buddhaword",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logotype.png",
@@ -14,6 +14,10 @@
       "bundleIdentifier": "com.souliyappsdev.buddhaword"
     },
     "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION"
+      ],
+      "jsEngine": "hermes",
       "newArchEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logotype.png",

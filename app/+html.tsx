@@ -12,10 +12,6 @@ export default function Root({ children }: PropsWithChildren) {
           content='width=device-width, initial-scale=1, shrink-to-fit=no'
         />
         <link rel='manifest' href='/manifest.json' />
-        <link
-          href='https://fonts.googleapis.com/icon?family=Material+Icons'
-          rel='stylesheet'
-        />
         <script dangerouslySetInnerHTML={{ __html: swScript }} />
         <ScrollViewStyleReset />
       </head>

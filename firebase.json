@@ -8,21 +8,33 @@
                     "**/.*",
                     "**/node_modules/**"
                ],
-               "rewrites": [
-                    {
-                         "source": "**",
-                         "destination": "/index.html"
-                    }
-               ],
                "headers": [
                     {
-                         "source": "/serviceWorker.js",
+                         "source": "/public/sw.js",
                          "headers": [
                               {
                                    "key": "Cache-Control",
                                    "value": "no-cache"
                               }
                          ]
+                    }
+               ],
+               "rewrites": [
+                    {
+                         "source": "/assets/images/logotype.png",
+                         "destination": "/public/assets/images/logotype.png"
+                    },
+                    {
+                         "source": "/public/manifest.json",
+                         "destination": "/public/manifest.json"
+                    },
+                    {
+                         "source": "/public/**",
+                         "destination": "/public/"
+                    },
+                    {
+                         "source": "**",
+                         "destination": "/index.html"
                     }
                ]
           }
