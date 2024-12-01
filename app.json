@@ -4,7 +4,8 @@
     "slug": "buddhaword",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/logotype.png",
+    "icon": "./assets/images/Icon-192.png",
+    "backgroundColor": "#FFAF5D",
     "scheme": "buddhaword",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,6 +15,7 @@
       "bundleIdentifier": "com.souliyappsdev.buddhaword"
     },
     "android": {
+      "backgroundColor": "#FFAF5D",
       "permissions": [
         "ACCESS_FINE_LOCATION"
       ],
@@ -40,7 +42,7 @@
       "manifest": {
         "short_name": "Buddhaword",
         "name": "Buddhaword",
-        "start_url": "/?source=pwa",
+        "start_url": "/",
         "display": "standalone",
         "background_color": "#FFAF5D",
         "theme_color": "#FFAF5D",
