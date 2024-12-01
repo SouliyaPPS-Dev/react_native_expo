@@ -1,5 +1,4 @@
 import { DataHandler } from '@/components/DataHandler';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { useSutra } from '@/hooks/sutra/useSutra';
 import React from 'react';
 import {
@@ -34,19 +33,20 @@ export default function SutraScreen() {
   );
 
   return (
-    <ParallaxScrollView>
-      <DataHandler isLoading={isLoading} error={error} data={data || []}>
-        {/* Display categories in a FlatList with grid layout */}
-        <FlatList
-          data={categories}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={renderCategory}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          contentContainerStyle={styles.listContainer}
-        />
-      </DataHandler>
-    </ParallaxScrollView>
+    <DataHandler isLoading={isLoading} error={error} data={data || []}>
+      {/* Display categories in a FlatList with grid layout */}
+      <FlatList
+        data={categories}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={renderCategory}
+        numColumns={2}
+        columnWrapperStyle={styles.row}
+        contentContainerStyle={styles.listContainer}
+        // Add padding at the top or bottom if needed
+        ListHeaderComponent={<View style={{ height: 16 }} />}
+        ListFooterComponent={<View style={{ height: 16 }} />}
+      />
+    </DataHandler>
   );
 }
 

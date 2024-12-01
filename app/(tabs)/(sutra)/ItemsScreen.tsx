@@ -21,22 +21,26 @@ export default function ItemsScreen() {
 
   return (
     <DataHandler isLoading={isLoading} error={error} data={data || []}>
-      <View style={styles.container}>
-        {filteredItems && filteredItems.length > 0 ? (
-          <FlatList
-            data={filteredItems}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={styles.listContent}
-          />
-        ) : (
+      {filteredItems && filteredItems.length > 0 ? (
+        <FlatList
+          data={filteredItems}
+          keyExtractor={(item) => item.ID}
+          renderItem={renderItem}
+          contentContainerStyle={styles.listContent}
+          keyboardShouldPersistTaps='handled'
+          // Add header or footer as needed
+          ListHeaderComponent={<View style={{ height: 16 }} />}
+          ListFooterComponent={<View style={{ height: 16 }} />}
+        />
+      ) : (
+        <View style={styles.noItemsContainer}>
           <Text style={styles.noItemsText}>
             {category
               ? `No items found for the category "${category}".`
               : 'No data available.'}
           </Text>
-        )}
-      </View>
+        </View>
+      )}
     </DataHandler>
   );
 }
@@ -61,8 +65,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  noItemsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   noItemsText: {
-    marginTop: 50,
     fontSize: 16,
     color: '#888',
     textAlign: 'center',

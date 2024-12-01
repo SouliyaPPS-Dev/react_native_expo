@@ -1,8 +1,8 @@
 import { colorModeManager } from '@/constants/colorModeManager';
 import { bgColor, nativeBaseTheme } from '@/constants/nativeBaseTheme';
-import { queryClient } from '@/service/queryClient';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { asyncStoragePersister, persister, queryClient } from '@/service/queryClient';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -36,10 +36,16 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister: Platform.OS === 'web' ? persister : asyncStoragePersister,
+      }}
+    >
       <NativeBaseProvider
         theme={nativeBaseTheme(colorMode)}
         colorModeManager={colorModeManager}
+        isSSR={false}
       >
         <SafeAreaProvider>
           <Box
@@ -64,6 +70,6 @@ export default function RootLayout() {
 
       {/* Conditionally render ReactQueryDevtools for web only */}
       {Platform.OS === 'web' && <ReactQueryDevtools initialIsOpen={false} />}
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }

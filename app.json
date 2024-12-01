@@ -20,7 +20,7 @@
       "jsEngine": "hermes",
       "newArchEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logotype.png",
+        "foregroundImage": "./assets/images/Icon-192.png",
         "backgroundColor": "#FFAF5D"
       },
       "package": "com.souliyappsdev.buddhaword"

@@ -15,17 +15,21 @@ const HEADER_HEIGHT = 250;
 type Props = PropsWithChildren<{
   headerImage?: ReactElement; // Optional header image
   headerBackgroundColor?: { dark: string; light: string }; // Optional background color
+  renderScrollComponent?: (props: any) => React.ReactElement; // Custom scroll component
 }>;
 
 export default function ParallaxScrollView({
   children,
   headerImage, // Optional prop
   headerBackgroundColor,
+  renderScrollComponent,
 }: Props) {
   const { colorMode } = useColorMode(); // Handle theme mode toggle
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
   const bottom = useBottomTabOverflow();
+
+  const ScrollComponent = renderScrollComponent || Animated.ScrollView;
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -52,7 +56,7 @@ export default function ParallaxScrollView({
 
   return (
     <ThemedView style={styles.container}>
-      <Animated.ScrollView
+      <ScrollComponent
         ref={scrollRef}
         scrollEventThrottle={16}
         scrollIndicatorInsets={{ bottom }}
@@ -77,7 +81,7 @@ export default function ParallaxScrollView({
 
         {/* Content */}
         <ThemedView style={styles.content}>{children}</ThemedView>
-      </Animated.ScrollView>
+      </ScrollComponent>
     </ThemedView>
   );
 }

@@ -12,15 +12,13 @@
       "distribution": "internal",
       "developmentClient": false,
       "android": {
-        "buildType": "apk",
-        "mode": "split"
+        "buildType": "apk"
       }
     },
     "production": {
       "autoIncrement": true,
       "android": {
-        "jsEngine": "hermes",
-        "mode": "split"
+        "buildType": "app-bundle"
       }
     }
   },
