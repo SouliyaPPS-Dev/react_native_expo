@@ -16,6 +16,7 @@
     "isolatedModules": true,
     "resolveJsonModule": true,
     "types": ["node", "react", "react-native"],
+    "jsxImportSource": "react",
     "paths": {
       "@/*": ["./*"]
     }

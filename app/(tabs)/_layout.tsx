@@ -11,6 +11,7 @@ const ICONS = {
   sutra: require('@/assets/images/sutra.png'),
   book: require('@/assets/images/book.png'),
   calendar: require('@/assets/images/calendar.png'),
+  vdo: require('@/assets/images/vdo.png'),
 };
 
 export default function TabLayout() {
@@ -86,6 +87,9 @@ export default function TabLayout() {
 
       {/* Calendar Tab */}
       {renderTab('(calendar)/calendar', 'ປະຕິທິນທັມ', 'calendar')}
+
+      {/* Vdo Tab */}
+      {renderTab('(vdo)/vdo', 'ວີດີໂອ', 'vdo')}
 
       {/* ItemsScreen Tab */}
       <Tabs.Screen

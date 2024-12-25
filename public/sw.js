@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ui-cache'; // Update cache name version when assets change
+const CACHE_NAME = 'ui-cache-v1'; // Update cache name version when assets change
 const ASSETS_TO_CACHE = [
   '/', // Root
   '/index.html',
